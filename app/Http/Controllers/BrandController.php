@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use Illuminate\Http\Request;
 
 class BrandController extends Controller
@@ -19,7 +20,9 @@ class BrandController extends Controller
      */
     public function create()
     {
-        //
+        return view('brands.create', [
+            // You can pass any necessary data to the view here
+        ]);
     }
 
     /**
@@ -27,7 +30,11 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:brands',
+        ]);
+        Brand::create($request->all());
+        return redirect()->route('brands.index')->with('success', 'Brand created successfully.');
     }
 
     /**

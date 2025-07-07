@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Item;
+use App\Models\Warehouse;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -19,7 +23,11 @@ class ItemController extends Controller
      */
     public function create()
     {
-        //
+        return view('items.create', [
+            'categories' => Category::all(),
+            'brands' =>Brand::all(),
+            'warehouses' => Warehouse::all(),
+        ]);
     }
 
     /**
@@ -27,7 +35,19 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'quantity' => 'required|integer|min:0',
+            'unit' => 'required|string|max:20',
+            'warehouse_id' => 'required|exists:warehouses,id',
+            'category_id' => 'nullable|exists:categories,id',
+            'brand_id' => 'nullable|exists:brands,id',
+        ]);
+
+        Item::create($request->all());
+
+        return redirect()->route('items.index')->with('success', 'جنس با موفقیت ثبت شد.');
     }
 
     /**
