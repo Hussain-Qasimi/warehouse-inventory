@@ -15,7 +15,8 @@ class ItemController extends Controller
      */
     public function index()
     {
-        //
+        $items = Item::with(['category', 'brand', 'warehouse'])->get();
+        return view('items.index', compact('items'));
     }
 
     /**
@@ -35,7 +36,7 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+       
         $request->validate([
             'name' => 'required|string|max:255',
             'quantity' => 'required|integer|min:0',
@@ -61,24 +62,41 @@ class ItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $item)
     {
-        //
+        return view('items.edit', [
+            'item' => $item,
+            'categories' => Category::all(),
+            'brands' => Brand::all(),
+            'warehouses' => Warehouse::all(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Item $item)
     {
-        //
+            $request->validate([
+            'name' => 'required|string|max:255',
+            'quantity' => 'required|integer|min:0',
+            'unit' => 'required|string|max:20',
+            'warehouse_id' => 'required|exists:warehouses,id',
+            'category_id' => 'nullable|exists:categories,id',
+            'brand_id' => 'nullable|exists:brands,id',
+        ]);
+
+        $item->update($request->all());
+
+        return redirect()->route('items.index')->with('success', 'ویرایش با موفقیت انجام شد.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Item $item)
     {
-        //
+        $item->delete();
+        return redirect()->route('items.index')->with('success', 'جنس حذف شد.');
     }
 }
