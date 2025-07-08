@@ -62,7 +62,8 @@ class ItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $item)
+
+    public function edit(Item $item)
     {
         return view('items.edit', [
             'item' => $item,

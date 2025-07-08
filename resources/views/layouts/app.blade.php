@@ -6,10 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Warehouse Inventory</title>
     <!-- Add your CSS links here -->
+     @livewireStyles
 </head>
 <body>
     <div class="container">
         @yield('content')
     </div>
+    
+    @livewireScripts
 </body>
 </html>
