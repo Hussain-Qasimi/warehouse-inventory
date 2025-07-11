@@ -11,8 +11,9 @@ class WarehouseController extends Controller
 
     public function index()
     {
-        $warehouses = Warehouse::all();
-        return view('warehouses.index', compact('warehouses'));
+        return view('warehouses.index');
+        // $warehouses = Warehouse::all();
+        // return view('warehouses.index', compact('warehouses'));
     }
 
 
